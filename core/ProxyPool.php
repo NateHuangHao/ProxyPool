@@ -42,6 +42,13 @@ class ProxyPool
     private function get_ip()
     {
         $ip_arr = [];
+        $ip_arr = $this->get_xici_ip($ip_arr);
+        $ip_arr = $this->get_kuaidaili_ip($ip_arr);
+        return $ip_arr;
+    }
+
+    private function get_xici_ip($ip_arr)
+    {
         for ($i = 1; $i <= config('spider.page_num'); $i++) {
             list($infoRes, $msg) = $this->httpClient ->request(
                 'GET',
@@ -62,8 +69,40 @@ class ProxyPool
                 $ip_arr[] = $host_arr[$key].":".$port_arr[$key];
             }
         }
+
         return $ip_arr;
     }
+
+    private function get_kuaidaili_ip($ip_arr)
+    {
+        for ($i = 1; $i <= config('spider.page_num'); $i++) {
+            list($infoRes, $msg) = $this->httpClient ->request(
+                'GET',
+                'https://www.kuaidaili.com/free/inha/'.$i,
+                []
+            );
+            if (!$infoRes) {
+                print_r($msg);
+                exit();
+            }
+            $infoContent = $infoRes->getBody();
+            $this->convert_encoding($infoContent);
+           
+            preg_match_all('/<td data-title="IP">(.*?)<\/td>/', $infoContent, $host);
+            preg_match_all('/<td data-title="PORT">(.*?)<\/td>/', $infoContent, $port);
+
+            $host_arr = $host[1];
+            $port_arr = $port[1];
+            foreach ($host_arr as $key => $value) {
+                $ip_arr[] = $host_arr[$key].":".$port_arr[$key];
+            }
+            sleep(2);
+        }
+
+        return $ip_arr;
+    }
+
+    
 
     //检测IP可用性
     private function check_ip($ip_arr)
@@ -73,9 +112,9 @@ class ProxyPool
 
         foreach ($queue as $key => $value) {
             for ($i=0; $i < config('spider.examine_round'); $i++) { 
-                $response = $this->httpClient->test_request('GET','https://www.baidu.com', ['proxy' => 'tcp://'.$value]);
+                $response = $this->httpClient->test_request('GET','https://www.baidu.com', ['proxy' => 'https://'.$value]);
                 if (!$response) {
-                    $response = $this->httpClient->test_request('GET','http://www.qq.com', ['proxy' => 'tcp://'.$value]);
+                    $response = $this->httpClient->test_request('GET','http://www.qq.com', ['proxy' => 'http://'.$value]);
                     if ($response && $response->getStatusCode() == 200) {
                         break;
                     }
