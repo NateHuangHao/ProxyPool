@@ -13,5 +13,5 @@
 		'set_proxy' => false,
 
 		//请求代理网站的代理IP
-		'proxy_host' => 'http://web-proxy.tencent.com:8080',
+		'proxy_host' => '',
 	];

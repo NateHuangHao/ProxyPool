@@ -20,7 +20,7 @@ class Requests
 	
 	public function request($method, $cgi, $params)
     {
-    	//判断是否腾讯内部开发网
+    	//是否需要代理
         if (config("spider.set_proxy")) {
             $params += [
                 'proxy' => config("spider.proxy_host")
