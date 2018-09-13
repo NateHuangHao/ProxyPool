@@ -111,6 +111,7 @@ class ProxyPool
         $queue = $this->queueObj->getQueue();
 
         foreach ($queue as $key => $value) {
+            //用百度网和腾讯网测试IP地址的可用性
             for ($i=0; $i < config('spider.examine_round'); $i++) { 
                 $response = $this->httpClient->test_request('GET','https://www.baidu.com', ['proxy' => 'https://'.$value]);
                 if (!$response) {
@@ -123,9 +124,14 @@ class ProxyPool
                     break;
                 }
             }
-            
+            //将结果存入数据库
         	if ($response && $response->getStatusCode() == 200) {
-        		$this->set_ip2redis($value);
+                if (config("database.redis_host") == 'redis') {
+                    $this->set_ip2redis($value);
+                }
+                else if (config("database.redis_host") == 'mysql') {
+                    $this->set_ip2mysql($value);
+                }
                 echo $value . " success!!!!!!!!!!!!!!!!!!!!!!!! ". PHP_EOL;
         	}
         	else{
@@ -142,7 +148,7 @@ class ProxyPool
     }
 
     //将可用ip存进mysql
-    private function set_ip2mysql($ip_arr)
+    private function set_ip2mysql($ip)
     {
        
     }
