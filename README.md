@@ -14,3 +14,8 @@ php run.php
 例：http://127.0.0.1/status    //获取数据库中IP数量
 例：http://127.0.0.1/pop       //随机取出一个ip，并删除它
 ``` 
+
+## 检查数据库中的IP可用性，丢弃不可用IP
+``` 
+php check.php
+``` 
