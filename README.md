@@ -1,6 +1,11 @@
 # ProxyPool
 IP代理池项目（目前仅支持西刺和快代理，使用redis做存储）
 
+## 环境要求
+PHP 5.4 以上版本,强烈推荐适用5.6，性能更好
+Swoole 1.8.7 以上版本
+PDO PDO_Mysql
+
 ## 项目初始化
 ``` 
 composer install
