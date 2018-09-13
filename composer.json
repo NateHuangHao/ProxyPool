@@ -1,0 +1,20 @@
+{
+    "name": "NateHuang/ProxyPool",
+    "description": "a free ip proxy pool",
+    "license": "MIT",
+    "type": "project",
+    "keywords": [
+        "ProxyPool"
+    ],
+    "authors": [
+        {
+            "name": "NateHuang",
+            "email": "397605079@qq.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+    	"php": ">=5.6.4",
+        "guzzlehttp/guzzle": "~6.0"
+    }
+}

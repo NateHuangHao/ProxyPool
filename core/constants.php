@@ -1,0 +1,2 @@
+<?php
+define('PROXY', true);
