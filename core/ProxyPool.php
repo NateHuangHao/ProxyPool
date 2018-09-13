@@ -27,12 +27,15 @@ class ProxyPool
 
     public function run()
     {
+        echo "start to spider ip...." . PHP_EOL;
     	$ip_arr = $this->get_ip();
-
+        echo "select IP num: " . count($ip_arr) . PHP_EOL;
+        echo "start to check ip...." . PHP_EOL;
         $this->check_ip($ip_arr);
         $ip_pool = $this->redis->smembers('ip_pool');
-		print_r($ip_arr);
-        exit();
+        echo "end check ip...." . PHP_EOL;
+		print_r($ip_pool);
+        die;
     }
 
     //获取各大网站代理IP
@@ -84,12 +87,10 @@ class ProxyPool
             
         	if ($response && $response->getStatusCode() == 200) {
         		$this->set_ip2redis($value);
-        		print_r($value." success!!!!!!!!!!!!!!!!!!!!!!!! ");
-                echo "\n";
+                echo $value . " success!!!!!!!!!!!!!!!!!!!!!!!! ". PHP_EOL;
         	}
         	else{
-        		print_r($value." error... ");
-                echo "\n";
+                echo $value . " error...  ". PHP_EOL;
         	}
 
         }
