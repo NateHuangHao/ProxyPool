@@ -1,13 +1,10 @@
 <?php
+
 /**
- * Licensed under The MIT License
- * For full copyright and license information, please see the MIT-LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
  * @author    NateHuang<397605079@qq.com>
  * @link      https://github.com/NateHuangHao/ProxyPool  github
- * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace ProxyPool;
 
 class autoloader
@@ -20,20 +17,19 @@ class autoloader
      */
     public static function load_namespace($name)
     {
+        //兼容windows和linux的目录分隔符
         $class_path = str_replace('\\', DIRECTORY_SEPARATOR, $name);
 
-        if (strpos($name, 'phpspider\\') === 0) 
+        //获取文件路径
+        $class_file = __DIR__ . substr($class_path, strlen('ProxyPool')) . '.php';
+
+        //如果不存在，去上一层目录寻找
+        if (empty($class_file) || !is_file($class_file)) 
         {
-            $class_file = __DIR__ . substr($class_path, strlen('phpspider')) . '.php';
-        }
-        else 
-        {
-            if (empty($class_file) || !is_file($class_file)) 
-            {
-                $class_file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . "$class_path.php";
-            }
+            $class_file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . "$class_path.php";
         }
 
+        //存在文件就require_once
         if (is_file($class_file)) 
         {
             require_once($class_file);
@@ -45,5 +41,5 @@ class autoloader
         return false;
     }
 }
-
+//spl注册自动加载
 spl_autoload_register('\ProxyPool\autoloader::load_namespace');
