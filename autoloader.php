@@ -5,7 +5,7 @@
  * @link      https://github.com/NateHuangHao/ProxyPool  github
  */
 
-namespace ProxyPool;
+namespace AutoLoad;
 
 class autoloader
 {
@@ -42,4 +42,4 @@ class autoloader
     }
 }
 //spl注册自动加载
-spl_autoload_register('\ProxyPool\autoloader::load_namespace');
+spl_autoload_register('\AutoLoad\autoloader::load_namespace');
